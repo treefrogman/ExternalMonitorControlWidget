@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AllowSystem</key>
+	<true/>
+   <key>CFBundleDisplayName</key>
+   <string>External Monitor Control</string>
+   <key>CFBundleIdentifier</key>
+   <string>com.mkc7.widget.ExternalMonitorControlWidget</string>
+   <key>CFBundleVersion</key>
+   <string>1.1</string>
+   <key>CloseBoxInsetX</key>
+   <integer>16</integer>
+   <key>CloseBoxInsetY</key>
+   <integer>14</integer>
+   <key>MainHTML</key>
+   <string>ExternalMonitorControl.html</string>
+</dict>
+</plist>

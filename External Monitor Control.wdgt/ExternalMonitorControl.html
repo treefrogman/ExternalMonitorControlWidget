@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <style>
+
+            body {
+                margin: 0;
+                width: 320px;
+            }
+
+            .screen {
+                --screen-margin: 13px;
+                font: 12px "Lucida Grande";
+                font-weight: bold;
+                color: black;
+                text-align: center;
+                position: absolute;
+                top: var(--screen-margin);
+                left: var(--screen-margin);
+                right: var(--screen-margin);
+                height: calc(210px - var(--screen-margin) * 2);
+                background-color: rgb(47, 165, 243);
+            }
+
+			.minmax {
+				display: inline-block;
+				margin: 6px auto;
+				height: 100%;
+			}
+
+            #controls {
+				display: inline-block;
+				margin: 6px auto;
+				width: 130px;
+				height: 100%;
+                text-align: left;
+            }
+
+			input[type=button] {
+				-webkit-appearance: none;
+				display: inline;
+				/* height: 100%; */
+			}
+
+			input[type=text] {
+				-webkit-appearance: none;
+				display: inline-block;
+				width: 3em;
+				margin: 1px;
+				border: none;
+				text-align: center;
+				float: right;
+			}
+
+			input[type=range] {
+				display: block;
+			}
+
+            label {
+                display: inline-block;
+                position: relative;
+            }
+
+            label[for=red] {
+                color: red;
+            }
+
+            label[for=green] {
+                color: green;
+            }
+
+            label[for=blue] {
+                color: blue;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="Default.png">
+        <div class="screen">
+			<!-- <div class="minmax"><input type="button" value="MIN" /></div> -->
+            <div id="controls"></div>
+			<!-- <div class="minmax"><input type="button" value="MAX" /></div> -->
+        </div>
+		<script>
+			let controls = [
+				["Brightness", "b"],
+				["Contrast", "c"],
+				["Red", "rg"],
+				["Green", "gg"],
+				["Blue", "bg"]
+			];
+
+			function updateControl(flag, value) {
+				// Source: https://github.com/kfix/ddcctl
+				widget.system("scripts/ddcctl -d 1 -" + flag + " " + value, null).outputString;
+			}
+			let controlsDiv = document.getElementById("controls");
+			controls = controls.map((control) => {
+				let lowercasename = control[0].toLowerCase();
+				let label = document.createElement("label");
+				label.setAttribute("for", lowercasename);
+				label.textContent = control[0];
+				controlsDiv.appendChild(label);
+				let text = document.createElement("input");
+				text.setAttribute("type", "text");
+				text.setAttribute("value", "50");
+				text.setAttribute("id", lowercasename + "-text");
+				controlsDiv.appendChild(text);
+				let slider = document.createElement("input");
+				slider.setAttribute("type", "range");
+				slider.setAttribute("min", "1");
+				slider.setAttribute("max", "100");
+				slider.setAttribute("value", "50");
+				slider.setAttribute("class", "slider");
+				slider.setAttribute("id", lowercasename);
+				controlsDiv.appendChild(slider);
+
+				text.oninput = slider.oninput = (event) => {
+					let value = event.target.value;
+					text.value = slider.value = value;
+					updateControl(control[1], value);
+				};
+
+				text.onchange = slider.onchange = (event) => {
+					let value = event.target.value;
+					if(isNaN(value) || value == "") {
+						text.value = slider.value = 50;
+					}
+				};
+
+				return {
+					label,
+					text,
+					slider
+				}
+			});
+		</script>
+    </body>
+</html>
